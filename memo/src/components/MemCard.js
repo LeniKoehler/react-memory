@@ -12,7 +12,6 @@ const useStyles = makeStyles({
 });
 
 
-
 export default function MemCard(probs) {
   const [revealed, setRevealed] = useState(false);
   const [currentImage, setCurrentImage] = useState(backsideImage);
@@ -25,6 +24,9 @@ export default function MemCard(probs) {
 
   useEffect(() => {
     setCurrentImage(revealed ? probs.image : backsideImage);
+    if (revealed) {
+      probs.hasBeenRevealed();
+    }
   }, [revealed]);
 
   return (

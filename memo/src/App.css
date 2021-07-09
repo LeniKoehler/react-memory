@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.cardContainer {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+.card {
+  margin: 5%;
+}

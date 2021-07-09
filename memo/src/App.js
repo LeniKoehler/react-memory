@@ -1,18 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
 import MemCard from './components/MemCard.js';
 import reactImageLogo from './img/logo-og.png';
 
 function App() {
 
-
+  const checkCards = (info) => {
+    console.log("A card has been revealed");
+  }
 
   return (
     <div className="App">
       <header className="App-header">
-        <MemCard image={reactImageLogo}></MemCard>
-        <MemCard image={reactImageLogo}></MemCard>
-        <MemCard image={reactImageLogo}></MemCard>
+        <div className="cardContainer">
+          <div className="card" > <MemCard hasBeenRevealed={(info) => checkCards(info)} image={reactImageLogo}></MemCard></div>
+          <div className="card" > <MemCard hasBeenRevealed={(info) => checkCards(info)} image={reactImageLogo}></MemCard></div>
+          <div className="card" > <MemCard hasBeenRevealed={(info) => checkCards(info)} image={reactImageLogo}></MemCard></div>
+          <div className="card" > <MemCard hasBeenRevealed={(info) => checkCards(info)} image={reactImageLogo}></MemCard></div>
+          <div className="card" > <MemCard hasBeenRevealed={(info) => checkCards(info)} image={reactImageLogo}></MemCard></div>
+          <div className="card" > <MemCard hasBeenRevealed={(info) => checkCards(info)} image={reactImageLogo}></MemCard></div>
+          <div className="card" > <MemCard hasBeenRevealed={(info) => checkCards(info)} image={reactImageLogo}></MemCard></div>
+          <div className="card" > <MemCard hasBeenRevealed={(info) => checkCards(info)} image={reactImageLogo}></MemCard></div>
+          <div className="card" > <MemCard hasBeenRevealed={(info) => checkCards(info)} image={reactImageLogo}></MemCard></div>
+          <div className="card" > <MemCard hasBeenRevealed={(info) => checkCards(info)} image={reactImageLogo}></MemCard></div>
+          <div className="card" > <MemCard hasBeenRevealed={(info) => checkCards(info)} image={reactImageLogo}></MemCard></div>
+        </div>
       </header>
     </div>
   );
