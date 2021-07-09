@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -20,9 +20,12 @@ export default function MemCard(probs) {
   const classes = useStyles();
 
   function flipCard() {
-    setCurrentImage(revealed ? probs.image : backsideImage);
     setRevealed(!revealed);
   }
+
+  useEffect(() => {
+    setCurrentImage(revealed ? probs.image : backsideImage);
+  }, [revealed]);
 
   return (
     <Card className={classes.root}>
