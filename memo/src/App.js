@@ -1,12 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
-import ImgMediaCard from './components/Card.js';
+import MemCard from './components/MemCard.js';
+import reactImageLogo from './img/logo-og.png';
 
 function App() {
+
+
+
   return (
     <div className="App">
       <header className="App-header">
-        <ImgMediaCard></ImgMediaCard>
+        <MemCard image={reactImageLogo}></MemCard>
       </header>
     </div>
   );
