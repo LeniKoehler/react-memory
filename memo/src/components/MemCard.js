@@ -4,6 +4,8 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import backsideImage from '../img/backside.png'
+import { cardRevealedEvent, cardFlippedBack } from './MemController.js'
+
 
 const useStyles = makeStyles({
   root: {
@@ -16,17 +18,26 @@ export default function MemCard(probs) {
   const [revealed, setRevealed] = useState(false);
   const [currentImage, setCurrentImage] = useState(backsideImage);
   const [pairFound, setPairFound] = useState(false);
+
   const classes = useStyles();
 
   function flipCard() {
-    setRevealed(!revealed);
+    if (!probs.status.pairFound) {
+      setRevealed(!revealed);
+    }
+    else {
+      setPairFound(true);
+    }
   }
 
   useEffect(() => {
     setCurrentImage(revealed ? probs.image : backsideImage);
     if (revealed) {
-      probs.hasBeenRevealed();
+      cardRevealedEvent(probs);
+    } else {
+      cardFlippedBack(probs);
     }
+
   }, [revealed]);
 
   return (
