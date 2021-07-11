@@ -6,75 +6,72 @@ import CardMedia from '@material-ui/core/CardMedia';
 import backsideImage from '../img/backside.png'
 import { cardRevealedEvent, cardFlippedBack } from './MemController.js'
 
-
 const useStyles = makeStyles({
   root: {
     maxWidth: 200,
   },
 });
 
-
 var currentlyRevealedCards = [];
+var i = 0;
 
-function useForceUpdate() {
-  const [value, setValue] = useState(0); //integer state
-  return () => setValue(value => value + 1); //update the state to force render
-}
-
-export default function MemCard(probs) {
+export default function MemCard(props) {
   // const [revealed, setRevealed] = useState(false);
   const [currentImage, setCurrentImage] = useState(backsideImage);
   const [pairFound, setPairFound] = useState(false);
 
   const classes = useStyles();
 
-  const forceUpdate = useForceUpdate();
-
   function flipCard() {
     //füge karte zu array hinzu
-    currentlyRevealedCards.push(probs);
-    //wenn array.size = 2 dann
-    if (currentlyRevealedCards.length === 2) {
-      //prüfe ob images gleich
-      if (currentlyRevealedCards[0].status.image === currentlyRevealedCards[1].status.image) {
-        //wenn images gleich, setze forEach karte pairFound = true
-        alert('Matching pair has been found!')
-        currentlyRevealedCards.forEach(cardProbs => {
-          cardProbs.status.pairFound = true;
-          console.log(cardProbs);
-          console.log(currentlyRevealedCards.length);
-          console.log(cardProbs.status.id);
-          console.log(cardProbs.status.pairFound);
-        });
-        currentlyRevealedCards = [];
+    currentlyRevealedCards.push(props);
+    props.status.revealed = !props.status.revealed;
+    setCurrentImage(props.status.revealed ? props.status.image : backsideImage);
+    // Refresh the MemCard components
+    props.setRefresh(!props.refresh);
+  }
 
-        //wenn images ungleich, setze forEach karte revealed = false
+
+  useEffect(() => {
+    if (currentlyRevealedCards.length === 2 && i < 2) {
+      if (currentlyRevealedCards[0].status.image === currentlyRevealedCards[1].status.image) {
+        if (props.status.id === currentlyRevealedCards[0].status.id || props.status.id === currentlyRevealedCards[1].status.id) {
+          props.status.pairFound = true;
+          i++;
+        }
+        if (i === 2) {
+          currentlyRevealedCards = [];
+          i = 0;
+          alert("It is a match!")
+        }
       } else {
-        alert('Those cards did not match :(')
-        currentlyRevealedCards.forEach(cardProbs => {
-          cardProbs.status.pairFound = false;
-          cardProbs.status.revealed = false;
-          cardProbs.status.image = backsideImage;
-        });
-        currentlyRevealedCards = [];
+        if (props.status.id === currentlyRevealedCards[0].status.id || props.status.id === currentlyRevealedCards[1].status.id) {
+          setTimeout(() => {
+            props.status.revealed = false;
+            setCurrentImage(backsideImage);
+          }, 1000)
+
+          i++;
+          if (i === 2) {
+            currentlyRevealedCards = [];
+            i = 0;
+          }
+        }
       }
     } else {
 
     }
-    // useEffect(() => {
 
-    // }, [probs]);
-    probs.status.revealed = !probs.status.revealed;
-    if (!probs.status.revealed)
-      cardFlippedBack(probs);
+    // console.log("id: " + props.status.id + " pairFound: " + props.status.pairFound);
+    if (props.status.pairFound) {
+      setPairFound(true);
+    }
+    // console.log("refresh!");
 
-    setCurrentImage(probs.status.revealed ? probs.status.image : backsideImage);
-
-  }
-
+  }, [props.refresh]);
   return (
     <Card className={classes.root}>
-      <CardActionArea disabled={probs.status.pairFound} onClick={() => flipCard()}>
+      <CardActionArea disabled={pairFound} onClick={() => flipCard()}>
         <CardMedia
           component="img"
           alt="Contemplative Reptile"
