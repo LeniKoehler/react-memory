@@ -16,7 +16,11 @@ export function cardRevealedEvent(cardInfo) {
         } else {
             // TODO Hide both cards again or maybe not and force player to turn at least one card again 
             alert('Those cards did not match :(')
-
+            currentlyRevealedCards.forEach(cardProbs => {
+                cardProbs.status.pairFound = false;
+                cardProbs.status.revealed = false;
+            });
+            currentlyRevealedCards = [];
         }
     } else {
         return false;
