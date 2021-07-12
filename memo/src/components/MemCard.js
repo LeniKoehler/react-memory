@@ -30,7 +30,6 @@ export default function MemCard(props) {
     props.setRefresh(!props.refresh);
   }
 
-
   useEffect(() => {
     if (currentlyRevealedCards.length === 2 && i < 2) {
       if (currentlyRevealedCards[0].status.image === currentlyRevealedCards[1].status.image) {
