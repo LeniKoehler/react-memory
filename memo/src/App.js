@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import MemGame from "./components/MemGame.js";
 import Button from "@material-ui/core/Button";
+import {resetCards} from "./components/MemCard.js"
 
 function App() {
   const [reset, setReset] = useState(false);
@@ -14,6 +15,7 @@ function App() {
           color="primary"
           onClick={() => {
             setReset(true);
+            resetCards();
             setTimeout(() => {
               setReset(false);
             }, 5);
