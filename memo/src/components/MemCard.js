@@ -63,7 +63,6 @@ export default function MemCard(props) {
         if (i === 2) {
           currentlyRevealedCards = [];
           i = 0;
-          alert("It is a match!");
         }
       } else {
         if (

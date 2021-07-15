@@ -44,3 +44,19 @@
 .card {
   margin: 5%;
 }
+
+.headline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 1%;
+}
+.headline .title{
+  
+ font-weight: bold;
+ font-size: xx-large;
+ padding-right: 20px;
+}
+.score {
+  padding-right: 20px;
+}
