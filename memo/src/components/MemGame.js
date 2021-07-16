@@ -49,7 +49,7 @@ export default function MemGame(props) {
             setTimeout(() => {
                 let duration = ((new Date().getTime() - props.startTime) / 1000).toFixed(1);
                 props.setLastScore(duration);
-                if (duration < props.score || props.score === 0) {
+                if (parseFloat( duration) < parseFloat(props.score) || props.score === 0) {
                     props.setScore(duration);
                 }
             }, 500)
