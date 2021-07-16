@@ -10,7 +10,7 @@ function App() {
   const [lastScore, setLastScore] = useState(0);
   return (
     <div className="App">
-      <header className="App-header">
+      <div className="App-header">
         <div class="headline">
           <div class="title">
             Memory
@@ -38,7 +38,13 @@ function App() {
         <div className="MemGame">
           {!reset ? <MemGame startTime={new Date().getTime()} score={score} setScore={setScore} setLastScore={setLastScore} /> : <div>Resetting!</div>}
         </div>
-      </header>
+        <div class="footer">
+          made with React <br />
+          by <br />
+          <a href={"https://github.com/LeniKoehler"} target="_blank">Magdalena Köhler</a><br />
+          <a href={"https://github.com/Monogenesis"} target="_blank">Amadeus Zittel</a><br />
+        </div>
+      </div>
     </div>
   );
 }
