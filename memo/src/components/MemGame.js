@@ -4,12 +4,27 @@ import reactImageLogo from "../img/logo-react.png";
 import angular from "../img/angular.svg";
 import node from "../img/logo-node.png";
 import knockout from "../img/logo-knockout.png";
+import vue from "../img/logo-vue.png";
+import jquery from "../img/logo-jquery.png";
+import ember from "../img/logo-ember.png";
+import bootstrap from "../img/logo-bootstrap.png";
+import meteor from "../img/logo-meteor.png";
 
 export default function MemGame(props) {
   const [refresh, setRefresh] = useState(false);
   const [game, setGame] = useState([]); //--> ?
 
-  const images = [reactImageLogo, angular, node, knockout];
+  const images = [
+    reactImageLogo,
+    angular,
+    node,
+    knockout,
+    vue,
+    jquery,
+    ember,
+    bootstrap,
+    meteor,
+  ];
 
   useEffect(() => {
     const newGame = [];
