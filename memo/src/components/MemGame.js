@@ -24,14 +24,16 @@ export default function MemGame(props) {
                 id: 2 * i,
                 pairFound: false,
                 revealed: false,
-                image: images[i]
+                image: images[i],
+                game: game
             }
 
             const secondCard = {
                 id: 2 * i + 1,
                 pairFound: false,
                 revealed: false,
-                image: images[i]
+                image: images[i],
+                game: game
             }
 
             newGame.push(firstCard);
@@ -44,13 +46,13 @@ export default function MemGame(props) {
 
     }, [])
     useEffect(() => {
-        const finished = !game.some(card => !card.revealed)
+        const finished = !game.some(card => !card.pairFound)
         if (finished && game.length > 0) {
             setTimeout(() => {
                 let duration = ((new Date().getTime() - props.startTime) / 1000).toFixed(1);
                 props.setLastScore(duration);
-                if (parseFloat( duration) < parseFloat(props.score) || props.score === 0) {
-                    props.setScore(duration);
+                if (parseFloat(duration) < parseFloat(props.highscore) || props.highscore === 0) {
+                    props.setHighscore(duration);
                 }
             }, 500)
         }

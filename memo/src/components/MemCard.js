@@ -26,29 +26,33 @@ export default function MemCard(props) {
   const classes = useStyles();
 
   function flipCard() {
-    //füge karte zu array hinzu
+
     let alreadyAccountedFor = false;
 
     currentlyRevealedCards.forEach((element) => {
       if (element.status.id === props.status.id) {
         alreadyAccountedFor = true;
+
       }
     });
 
     if (alreadyAccountedFor) {
+      console.log("Already accounted for");
       return;
     }
 
     currentlyRevealedCards.push(props);
     props.status.revealed = !props.status.revealed;
+    setPairFound(true);
     setCurrentImage(props.status.revealed ? props.status.image : backsideImage);
 
-    // Refresh the MemCard components
+    // Refresh all MemCard components
     props.setRefresh(!props.refresh);
   }
 
   useEffect(() => {
     if (currentlyRevealedCards.length === 2 && i < 2) {
+
       if (
         currentlyRevealedCards[0].status.image ===
         currentlyRevealedCards[1].status.image
@@ -69,12 +73,12 @@ export default function MemCard(props) {
           props.status.id === currentlyRevealedCards[0].status.id ||
           props.status.id === currentlyRevealedCards[1].status.id
         ) {
+          setPairFound(true);
           setTimeout(() => {
             props.status.revealed = false;
             setCurrentImage(backsideImage);
-            currentlyRevealedCards = [];
+            setPairFound(false);
           }, 1000);
-
           i++;
           if (i === 2) {
             currentlyRevealedCards = [];
@@ -82,15 +86,12 @@ export default function MemCard(props) {
           }
         }
       }
-    } else {
     }
-
-    // console.log("id: " + props.status.id + " pairFound: " + props.status.pairFound);
     if (props.status.pairFound) {
       setPairFound(true);
     }
-    // console.log("refresh!");
   }, [props.refresh]);
+
   return (
     <Card className={classes.root}>
       <CardActionArea disabled={pairFound} onClick={() => flipCard()}>
