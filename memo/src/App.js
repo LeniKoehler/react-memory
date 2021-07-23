@@ -32,7 +32,7 @@ function App() {
               }, 5);
             }}
           >
-            New Game
+            Start Game
           </Button>
         </div>
         <div className="MemGame">

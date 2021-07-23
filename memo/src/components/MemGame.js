@@ -12,7 +12,7 @@ import meteor from "../img/logo-meteor.png";
 
 export default function MemGame(props) {
     const [refresh, setRefresh] = useState(false);
-    const [game, setGame] = useState([]); //--> ?
+    const [game, setGame] = useState([]);
 
     const images = [
         reactImageLogo,
@@ -27,7 +27,10 @@ export default function MemGame(props) {
     ];
 
     useEffect(() => {
+        // Set up a new game when this component gets rerendered
         const newGame = [];
+
+        // Create the two card pairs from the images
         for (let i = 0; i < images.length; i++) {
             const firstCard = {
                 id: 2 * i,
@@ -47,26 +50,42 @@ export default function MemGame(props) {
             newGame.push(secondCard);
         }
 
+        // Shuffle the cards
         const shuffledGame = newGame.sort(() => Math.random() - 0.5);
+
+        // Set the new game
         setGame(shuffledGame);
     }, []);
+
     useEffect(() => {
-        const finished = !game.some((card) => !card.revealed);
+        // Only execute this code when a MemCard updates the refresh state
+
+        // Find out if all card pairs have been found
+        const finished = !game.some((card) => !card.pairFound);
         if (finished && game.length > 0) {
+
+            // Delay the result
             setTimeout(() => {
+
+                // Get the duration since the game started and subtract the dalay
                 let duration = (
-                    (new Date().getTime() - props.startTime) /
+                    (new Date().getTime() - props.startTime - 1000) /
                     1000
                 ).toFixed(1);
+
                 props.setLastScore(duration);
+
+                // Check if the player was faster than the highscore
                 if (
                     parseFloat(duration) < parseFloat(props.score) ||
                     props.score === 0
                 ) {
                     props.setScore(duration);
                 }
-            }, 500);
+
+            }, 1000);
         }
+
     }, [refresh]);
 
     return (
