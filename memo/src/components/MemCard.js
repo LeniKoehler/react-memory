@@ -12,89 +12,90 @@ const useStyles = makeStyles({
 });
 
 var currentlyRevealedCards = [];
-var i = 0;
-
-export function resetCards() {
-  currentlyRevealedCards = [];
-}
+var cardsHandledCounter = 0; // Counter to only affect the relevant cards, if component gets updated
 
 export default function MemCard(props) {
-  // const [revealed, setRevealed] = useState(false);
   const [currentImage, setCurrentImage] = useState(backsideImage);
-  const [pairFound, setPairFound] = useState(false);
-
+  const [locked, setLocked] = useState(false);
   const classes = useStyles();
 
   function flipCard() {
 
-    let alreadyAccountedFor = false;
-
-    currentlyRevealedCards.forEach((element) => {
-      if (element.status.id === props.status.id) {
-        alreadyAccountedFor = true;
-
-      }
-    });
-
-    if (alreadyAccountedFor) {
-      console.log("Already accounted for");
-      return;
-    }
-
+    // Add this card to the reavlead card array
     currentlyRevealedCards.push(props);
-    props.status.revealed = !props.status.revealed;
-    setPairFound(true);
-    setCurrentImage(props.status.revealed ? props.status.image : backsideImage);
+
+    // Tell the game manager MemGame component that this card is now revealed
+    props.status.revealed = true;
+
+    // Disable all interaction with the component
+    setLocked(true);
+
+    // Show card frontside
+    setCurrentImage(props.status.image);
 
     // Refresh all MemCard components
     props.setRefresh(!props.refresh);
   }
 
-  useEffect(() => {
-    if (currentlyRevealedCards.length === 2 && i < 2) {
+  function flipBack() {
+    // Tell the game manager MemGame component that this card is now hidden
+    props.status.revealed = false;
 
+    // Show card backside
+    setCurrentImage(backsideImage);
+
+    // Unlock the interactions with the component
+    setLocked(false);
+  }
+
+  useEffect(() => {
+
+    // Only take action if two cards have been flipped
+    if (currentlyRevealedCards.length === 2) {
+
+      // Check if this component is one of the revealed cards
       if (
-        currentlyRevealedCards[0].status.image ===
-        currentlyRevealedCards[1].status.image
-      ) {
+        props.status.id === currentlyRevealedCards[0].status.id ||
+        props.status.id === currentlyRevealedCards[1].status.id
+      )
+        // Check if the images match
         if (
-          props.status.id === currentlyRevealedCards[0].status.id ||
-          props.status.id === currentlyRevealedCards[1].status.id
+          currentlyRevealedCards[0].status.image ===
+          currentlyRevealedCards[1].status.image
         ) {
+
+          // Tell the game manager MemGame component that this cards pair has been found
           props.status.pairFound = true;
-          i++;
-        }
-        if (i === 2) {
-          currentlyRevealedCards = [];
-          i = 0;
-        }
-      } else {
-        if (
-          props.status.id === currentlyRevealedCards[0].status.id ||
-          props.status.id === currentlyRevealedCards[1].status.id
-        ) {
-          setPairFound(true);
+
+          // Lock the card for the rest of the game
+          setLocked(true);
+
+          cardsHandledCounter++;
+
+        } else {  // The images are not matching
+
+          // Delay the flip back action by one second
           setTimeout(() => {
-            props.status.revealed = false;
-            setCurrentImage(backsideImage);
-            setPairFound(false);
+            flipBack();
           }, 1000);
-          i++;
-          if (i === 2) {
-            currentlyRevealedCards = [];
-            i = 0;
-          }
+
+          cardsHandledCounter++;
         }
+      if (cardsHandledCounter === 2) {
+
+        // Clear the revealed cards and reset the counter so the next two cards can be flipped
+        currentlyRevealedCards = [];
+
+        cardsHandledCounter = 0;
+
       }
     }
-    if (props.status.pairFound) {
-      setPairFound(true);
-    }
+
   }, [props.refresh]);
 
   return (
     <Card className={classes.root}>
-      <CardActionArea disabled={pairFound} onClick={() => flipCard()}>
+      <CardActionArea disabled={locked} onClick={() => flipCard()}>
         <CardMedia
           component="img"
           height="200"
