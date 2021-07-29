@@ -11,9 +11,20 @@ import bootstrap from "../img/logo-bootstrap.png";
 import meteor from "../img/logo-meteor.png";
 
 export default function MemGame(props) {
+
+    // State to rerender the cards and check if the game is over
     const [refresh, setRefresh] = useState(false);
+
+    // The array of all the cards in the game
     const [game, setGame] = useState([]);
 
+    // The state to check if the game has started
+    const [startedPlaying, setStartedPlaying] = useState(false);
+
+    // The start time when the player revealed the first card
+    const [startTime, setStartTime] = useState();
+
+    // The images used for the game
     const images = [
         reactImageLogo,
         angular,
@@ -26,8 +37,9 @@ export default function MemGame(props) {
         meteor,
     ];
 
+    // Set up a new game when this component gets rerendered
     useEffect(() => {
-        // Set up a new game when this component gets rerendered
+
         const newGame = [];
 
         // Create the two card pairs from the images
@@ -35,14 +47,12 @@ export default function MemGame(props) {
             const firstCard = {
                 id: 2 * i,
                 pairFound: false,
-                revealed: false,
                 image: images[i],
             };
 
             const secondCard = {
                 id: 2 * i + 1,
                 pairFound: false,
-                revealed: false,
                 image: images[i],
             };
 
@@ -57,8 +67,13 @@ export default function MemGame(props) {
         setGame(shuffledGame);
     }, []);
 
+    // Only execute this code when a MemCard updates the refresh state
     useEffect(() => {
-        // Only execute this code when a MemCard updates the refresh state
+
+        if (!startedPlaying) {
+            setStartedPlaying(true);
+            setStartTime(new Date().getTime());
+        }
 
         // Find out if all card pairs have been found
         const finished = !game.some((card) => !card.pairFound);
@@ -69,7 +84,7 @@ export default function MemGame(props) {
 
                 // Get the duration since the game started and subtract the dalay
                 let duration = (
-                    (new Date().getTime() - props.startTime - 1000) /
+                    (new Date().getTime() - startTime - 1000) /
                     1000
                 ).toFixed(1);
 
@@ -90,8 +105,8 @@ export default function MemGame(props) {
 
     return (
         <div className="cardContainer">
-            {game.map((card, index) => (
-                <div className="card" key={index}>
+            {game.map((card) => (
+                <div className="card">
                     <MemCard refresh={refresh} setRefresh={setRefresh} status={card} />
                 </div>
             ))}

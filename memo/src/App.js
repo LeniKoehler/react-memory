@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitterSquare, faGithubSquare } from "@fortawesome/free-brands-svg-icons"
 
-function App() {
+export default function App() {
   const [reset, setReset] = useState(false);
   const [highscore, setHighscore] = useState(0);
   const [lastScore, setLastScore] = useState(0);
@@ -16,11 +16,13 @@ function App() {
           <div class="title">
             Memory
           </div>
-          <div class="score">
-            Highscore: {highscore}s
-          </div>
-          <div class="score">
-            Last score: {lastScore}s
+          <div class="scores">
+            <div class="score">
+              Highscore: {highscore}s
+            </div>
+            <div class="score">
+              Last score: {lastScore}s
+            </div>
           </div>
           <Button
             variant="contained"
@@ -36,7 +38,7 @@ function App() {
           </Button>
         </div>
         <div className="MemGame">
-          {!reset ? <MemGame startTime={new Date().getTime()} score={highscore} setScore={setHighscore} setLastScore={setLastScore} /> : <div>Resetting!</div>}
+          {!reset ? <MemGame score={highscore} setScore={setHighscore} setLastScore={setLastScore} /> : <div>Resetting!</div>}
         </div>
         <div class="footer">
           made with React <br />
@@ -62,5 +64,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
 });
 
-var currentlyRevealedCards = [];
+var currentlyRevealedCards = []; // Contains the cards that are revealed in the current gamestep
 var cardsHandledCounter = 0; // Counter to only affect the relevant cards, if component gets updated
 
 export default function MemCard(props) {
@@ -24,9 +24,6 @@ export default function MemCard(props) {
     // Add this card to the reavlead card array
     currentlyRevealedCards.push(props);
 
-    // Tell the game manager MemGame component that this card is now revealed
-    props.status.revealed = true;
-
     // Disable all interaction with the component
     setLocked(true);
 
@@ -38,8 +35,6 @@ export default function MemCard(props) {
   }
 
   function flipBack() {
-    // Tell the game manager MemGame component that this card is now hidden
-    props.status.revealed = false;
 
     // Show card backside
     setCurrentImage(backsideImage);
@@ -48,6 +43,12 @@ export default function MemCard(props) {
     setLocked(false);
   }
 
+  // Clear the array when the game starts
+  useEffect(() => {
+    currentlyRevealedCards = [];
+  }, []);
+
+  // Check if this current component is part of the currently revealed cards
   useEffect(() => {
 
     // Only take action if two cards have been flipped
@@ -87,23 +88,24 @@ export default function MemCard(props) {
         currentlyRevealedCards = [];
 
         cardsHandledCounter = 0;
-
       }
     }
 
   }, [props.refresh]);
 
   return (
-    <Card className={classes.root}>
-      <CardActionArea disabled={locked} onClick={() => flipCard()}>
-        <CardMedia
-          component="img"
-          height="200"
-          width="200"
-          image={currentImage}
-          title="React"
-        />
-      </CardActionArea>
-    </Card>
+    <div className="memCard">
+      <Card className={classes.root}>
+        <CardActionArea disabled={locked} onClick={() => flipCard()}>
+          <CardMedia
+            component="img"
+            height="200"
+            width="200"
+            image={currentImage}
+            title="React"
+          />
+        </CardActionArea>
+      </Card>
+    </div>
   );
 }
