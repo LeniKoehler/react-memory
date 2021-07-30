@@ -17,3 +17,7 @@ Play it here: http://memo.azittel.mmkoehler.de/
 
 - Using the React library
 - Learning about React in general
+
+## Screenshots
+
+![Screenshot](https://raw.githubusercontent.com/LeniKoehler/react-memory/main/memo/sceenshot/game.png)
