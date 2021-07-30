@@ -10,7 +10,7 @@ This project is part of a presentation to introduce the React library. The game 
   
 ## Demo
 
-Play it here: https://monogenesis.github.io/React-Memory/
+Play it here: http://memo.azittel.mmkoehler.de/
 
   
 ## Lessons Learned
